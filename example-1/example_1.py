@@ -1,6 +1,8 @@
 import kfp
 import kfp.components as comp
 
+#input url
+url='https://raw.githubusercontent.com/shamiulshifat/kubeflow-practices/main/example-1/component.yaml'
 def merge_csv(file_path: comp.InputPath('Tarball'),
               output_csv: comp.OutputPath('CSV')):
   import glob
@@ -20,17 +22,16 @@ create_step_merge_csv = kfp.components.create_component_from_func(
     packages_to_install=['pandas==1.1.4'])
 
 
-web_downloader_op = kfp.components.load_component_from_url(
-    'https://raw.githubusercontent.com/kubeflow/pipelines/master/components/web/Download/component.yaml')
+web_downloader_op = kfp.components.load_component_from_url(url)
 
 #Define a pipeline and create a task from a component:
 def my_pipeline(url):
-  web_downloader_task = web_downloader_op(url=url)
-  merge_csv_task = create_step_merge_csv(file=web_downloader_task.outputs['data'])
+  web_downloader_task = web_downloader_op(url)
+  merge_csv_task = create_step_merge_csv(file=web_downloader_task.output['data'])
   # The outputs of the merge_csv_task can be referenced using the
   # merge_csv_task.outputs dictionary: merge_csv_task.outputs['output_csv']
 
 kfp.compiler.Compiler().compile(
-    pipeline_func=my_pipeline,
+    pipeline_func=my_pipeline(url),
     package_path='pipeline.yaml')
 
