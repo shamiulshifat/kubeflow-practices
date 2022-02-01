@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: multi-arguments-i-o-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-01T15:48:27.567873',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-01T15:57:08.637645',
     pipelines.kubeflow.org/pipeline_spec: '{"description": "A demo pipeline for I/O.",
       "inputs": [{"name": "text", "type": "String"}], "name": "multi-arguments I/O
       pipeline"}'}
@@ -149,6 +149,53 @@ spec:
           {"name": "number", "type": "Integer"}], "name": "Consume two arguments"}',
         pipelines.kubeflow.org/component_ref: '{}', pipelines.kubeflow.org/arguments.parameters: '{"number":
           "{{inputs.parameters.produce-two-small-outputs-number}}", "text": "{{inputs.parameters.produce-two-small-outputs-text}}"}'}
+  - name: consume-two-arguments-4
+    container:
+      args: [--text, '{{inputs.parameters.produce-one-small-output-Output}}', --number,
+        '{{inputs.parameters.produce-two-small-outputs-number}}']
+      command:
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp)
+        printf "%s" "$0" > "$program_path"
+        python3 -u "$program_path" "$@"
+      - |
+        def consume_two_arguments(text, number):
+            print('Text={}'.format(text))
+            print('Number={}'.format(str(number)))
+
+        import argparse
+        _parser = argparse.ArgumentParser(prog='Consume two arguments', description='')
+        _parser.add_argument("--text", dest="text", type=str, required=True, default=argparse.SUPPRESS)
+        _parser.add_argument("--number", dest="number", type=int, required=True, default=argparse.SUPPRESS)
+        _parsed_args = vars(_parser.parse_args())
+
+        _outputs = consume_two_arguments(**_parsed_args)
+      image: python:3.7
+    inputs:
+      parameters:
+      - {name: produce-one-small-output-Output}
+      - {name: produce-two-small-outputs-number}
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+      annotations: {pipelines.kubeflow.org/component_spec: '{"implementation": {"container":
+          {"args": ["--text", {"inputValue": "text"}, "--number", {"inputValue": "number"}],
+          "command": ["sh", "-ec", "program_path=$(mktemp)\nprintf \"%s\" \"$0\" >
+          \"$program_path\"\npython3 -u \"$program_path\" \"$@\"\n", "def consume_two_arguments(text,
+          number):\n    print(''Text={}''.format(text))\n    print(''Number={}''.format(str(number)))\n\nimport
+          argparse\n_parser = argparse.ArgumentParser(prog=''Consume two arguments'',
+          description='''')\n_parser.add_argument(\"--text\", dest=\"text\", type=str,
+          required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--number\",
+          dest=\"number\", type=int, required=True, default=argparse.SUPPRESS)\n_parsed_args
+          = vars(_parser.parse_args())\n\n_outputs = consume_two_arguments(**_parsed_args)\n"],
+          "image": "python:3.7"}}, "inputs": [{"name": "text", "type": "String"},
+          {"name": "number", "type": "Integer"}], "name": "Consume two arguments"}',
+        pipelines.kubeflow.org/component_ref: '{}', pipelines.kubeflow.org/arguments.parameters: '{"number":
+          "{{inputs.parameters.produce-two-small-outputs-number}}", "text": "{{inputs.parameters.produce-one-small-output-Output}}"}'}
   - name: multi-arguments-i-o-pipeline
     inputs:
       parameters:
@@ -175,6 +222,13 @@ spec:
           parameters:
           - {name: produce-two-small-outputs-number, value: '{{tasks.produce-two-small-outputs.outputs.parameters.produce-two-small-outputs-number}}'}
           - {name: produce-two-small-outputs-text, value: '{{tasks.produce-two-small-outputs.outputs.parameters.produce-two-small-outputs-text}}'}
+      - name: consume-two-arguments-4
+        template: consume-two-arguments-4
+        dependencies: [produce-one-small-output, produce-two-small-outputs]
+        arguments:
+          parameters:
+          - {name: produce-one-small-output-Output, value: '{{tasks.produce-one-small-output.outputs.parameters.produce-one-small-output-Output}}'}
+          - {name: produce-two-small-outputs-number, value: '{{tasks.produce-two-small-outputs.outputs.parameters.produce-two-small-outputs-number}}'}
       - {name: produce-one-small-output, template: produce-one-small-output}
       - {name: produce-two-small-outputs, template: produce-two-small-outputs}
   - name: produce-one-small-output

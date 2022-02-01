@@ -17,6 +17,7 @@ def produce_two_small_outputs() -> NamedTuple('Outputs', [('text', str), ('numbe
 def consume_two_arguments(text:str, number:int):
     print('Text={}'.format(text))
     print('Number={}'.format(str(number)))
+    
 
 #function 3
 @func_to_container_op
@@ -37,6 +38,7 @@ def make_pipeline(text:str):
     consume_task1 = consume_two_arguments(produce1_task.output, 42)
     consume_task2 = consume_two_arguments(text, produce2_task.outputs['number'])
     consume_task3 = consume_two_arguments(produce2_task.outputs['text'], produce2_task.outputs['number'])
+    consume_task4 = consume_two_arguments(produce1_task.output, produce2_task.outputs['number'])
 
 
 ##compile to yaml file
