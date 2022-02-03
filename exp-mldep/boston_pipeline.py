@@ -21,7 +21,7 @@ def train_op(x_train, y_train):
 
     return dsl.ContainerOp(
         name='Train Model',
-        image='shamiulshifat/boston-train:',
+        image='shamiulshifat/boston-train:v1',
         arguments=[
             '--x_train', x_train,
             '--y_train', y_train

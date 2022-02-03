@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: boston-housing-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-03T01:03:29.542723',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-03T11:33:28.415455',
     pipelines.kubeflow.org/pipeline_spec: '{"description": "An example pipeline that
       trains and logs a regression model.", "name": "Boston Housing Pipeline"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11}
@@ -82,7 +82,7 @@ spec:
   - name: train-model
     container:
       args: [--x_train, /tmp/inputs/input-0/data, --y_train, /tmp/inputs/input-1/data]
-      image: 'shamiulshifat/boston-train:'
+      image: shamiulshifat/boston-train:v1
     inputs:
       artifacts:
       - {name: preprocess-data-x_train, path: /tmp/inputs/input-0/data}
