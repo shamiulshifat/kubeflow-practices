@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: supabase-mega-pipeline-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-02-08T00:42:52.978323',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "An example pipeline that
+      receives and transmits dataset.", "inputs": [{"name": "dataset_url", "type":
+      "String"}], "name": "supabase-mega Pipeline"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11}
+spec:
+  entrypoint: supabase-mega-pipeline
+  templates:
+  - name: supa-mega-io-test
+    container:
+      args: [--dataset_url, '{{inputs.parameters.dataset_url}}']
+      image: shamiulshifat/supamega:v1
+    inputs:
+      parameters:
+      - {name: dataset_url}
+    outputs:
+      artifacts:
+      - {name: supa-mega-io-test-dataset, path: /app/salary_modified.csv}
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.11
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+  - name: supabase-mega-pipeline
+    inputs:
+      parameters:
+      - {name: dataset_url}
+    dag:
+      tasks:
+      - name: supa-mega-io-test
+        template: supa-mega-io-test
+        arguments:
+          parameters:
+          - {name: dataset_url, value: '{{inputs.parameters.dataset_url}}'}
+  arguments:
+    parameters:
+    - {name: dataset_url}
+  serviceAccountName: pipeline-runner
