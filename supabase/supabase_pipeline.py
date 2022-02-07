@@ -9,8 +9,13 @@ def data_process(dataset_url):
         image='shamiulshifat/supamega:v1',
         arguments=[
             '--dataset_url', dataset_url
-        ]
+        ],
+        file_outputs={
+            'dataset': 'salary_modified.csv'
+        }
     )
+
+
 
 # create complete pipeline
 
@@ -25,5 +30,5 @@ def supamega_pipeline(dataset_url:str):
 #compile yaml file
 # Compile the pipeline
 pipeline_func = supamega_pipeline
-pipeline_filename =  'supamegapipeline1.yaml'
+pipeline_filename =  'supamegapipeline2.yaml'
 compiler.Compiler().compile(pipeline_func, pipeline_filename)
