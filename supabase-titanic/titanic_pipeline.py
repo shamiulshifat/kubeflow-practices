@@ -44,7 +44,7 @@ def deploy_op(X_test, model):
 
     return dsl.ContainerOp(
         name='Test Model',
-        image='shamiulshifat/titanicdeploy:v2',
+        image='shamiulshifat/titanicdeploy:v3',
         arguments=[
             '--X_test', X_test,
             '--model', model
