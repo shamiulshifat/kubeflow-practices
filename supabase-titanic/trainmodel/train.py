@@ -8,10 +8,11 @@ from sklearn.impute import IterativeImputer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import recall_score, classification_report, precision_score, f1_score, roc_auc_score, accuracy_score
 from sklearn.feature_selection import SelectFromModel
-import joblib
+#import joblib
 from mega import Mega
 from urllib.request import urlopen
 import json
+import pickle
 
 def train(param_data, X_train_data, Y_train_data, X_valid_data, Y_valid_data):
     #load data
@@ -33,9 +34,11 @@ def train(param_data, X_train_data, Y_train_data, X_valid_data, Y_valid_data):
     #train model
     features = ["Pclass", "SibSp", "Parch","Sex", "Age", "Fare"] # Important Features
     # Randomly Tune the paramters
+    print('--------------')
+    print(X_train)
     RFC = RandomForestClassifier(n_estimators=params["n_estimators"], random_state=params["random_state"], max_depth=params["max_depth"])
-    RFC.fit(X_train[features], Y_train)
-    RFC_Predict = RFC.predict(X_valid[features])
+    RFC.fit(X_train, Y_train)
+    RFC_Predict = RFC.predict(X_valid)
     RFC_Accuracy = accuracy_score(Y_valid, RFC_Predict)
     print("Accuracy: " + str(RFC_Accuracy))
     RFC_AUC = roc_auc_score(Y_valid, RFC_Predict) 
@@ -46,7 +49,7 @@ def train(param_data, X_train_data, Y_train_data, X_valid_data, Y_valid_data):
     print(classification_report(Y_valid, RFC_Predict))
     
     #save model to cloud
-    joblib.dump(RFC, 'model.pkl')
+    pickle.dump(RFC, open('model.pkl', 'wb'))
     #send to mega
     mega = Mega()
     email='shifat@betterdata.ai'

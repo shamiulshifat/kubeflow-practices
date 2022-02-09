@@ -6,9 +6,9 @@ from mega import Mega
 def deploy(X_test_data, model_file):
     X_test=np.load(X_test_data)
     features = ["Pclass", "SibSp", "Parch","Sex", "Age", "Fare"] # Important Features
-    model = pickle.load(open(model_file, "rb"))
-    predictions = model.predict(X_test[features])
-    output = pd.DataFrame({'PassengerId': X_test.PassengerId, 'Survived': predictions})
+    model = pickle.load(open(model_file, 'rb'))
+    predictions = model.predict(X_test)
+    output = pd.DataFrame({'Survived': predictions})
     output.to_csv('titanic_predictions.csv', index=False)
     print("total survived:", output.Survived.value_counts())
     print("Your submission was successfully saved!")

@@ -24,7 +24,7 @@ def train_op(param,X_train, Y_train,X_valid,Y_valid):
 
     return dsl.ContainerOp(
         name='Train Model',
-        image='shamiulshifat/titanictrain:v1',
+        image='shamiulshifat/titanictrain:v3',
         arguments=[
             '--param', param,
             '--X_train', X_train,
@@ -44,7 +44,7 @@ def deploy_op(X_test, model):
 
     return dsl.ContainerOp(
         name='Test Model',
-        image='shamiulshifat/titanicdeploy:v1',
+        image='shamiulshifat/titanicdeploy:v2',
         arguments=[
             '--X_test', X_test,
             '--model', model
