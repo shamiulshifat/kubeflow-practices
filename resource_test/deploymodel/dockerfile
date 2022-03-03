@@ -1,0 +1,9 @@
+FROM python:3.7-slim
+
+WORKDIR /app
+
+RUN pip install sklearn numpy mega.py pandas
+
+COPY . .
+
+ENTRYPOINT [ "python", "deploy.py" ]

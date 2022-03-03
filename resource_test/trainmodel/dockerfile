@@ -1,0 +1,9 @@
+FROM python:3.7-slim
+
+WORKDIR /app
+
+RUN pip install pandas numpy sklearn mega.py
+
+COPY . .
+
+ENTRYPOINT [ "python", "train.py" ]

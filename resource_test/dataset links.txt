@@ -1,0 +1,7 @@
+dataset links: 
+
+https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/train.csv
+
+https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/test.csv
+
+https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/params.json
