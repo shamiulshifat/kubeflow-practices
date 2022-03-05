@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: titanic-pipeline-vpa-get-recom
+  generateName: titanic-pipeline-with-resource
   annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-03T16:27:56.535411',
     pipelines.kubeflow.org/pipeline_spec: '{"description": "An example pipeline that
       trains and logs a ML model.", "inputs": [{"name": "traindata_url"}, {"name":
@@ -17,6 +17,13 @@ spec:
       command: [python, dataprocess.py, --traindata_url, '{{inputs.parameters.traindata_url}}',
         --testdata_url, '{{inputs.parameters.testdata_url}}']
       image: shamiulshifat/titanicprocess:v1
+      resources:
+       limits:
+         cpu: "100m"
+         memory: "100Mi"
+       requests:
+         cpu: "50m"
+         memory: "50M"
     inputs:
       parameters:
       - {name: testdata_url}
@@ -37,6 +44,13 @@ spec:
     container:
       command: [python, deploy.py, --X_test, /tmp/inputs/input-0/data, --model, /tmp/inputs/input-1/data]
       image: shamiulshifat/titanicdeploy:v3
+      resources:
+       limits:
+         cpu: "150m"
+         memory: "200Mi"
+       requests:
+         cpu: "70m"
+         memory: "50M"
     inputs:
       artifacts:
       - {name: preprocess-data-X_test, path: /tmp/inputs/input-0/data}
@@ -87,6 +101,13 @@ spec:
         /tmp/inputs/input-0/data, --Y_train, /tmp/inputs/input-1/data, --X_valid,
         /tmp/inputs/input-2/data, --Y_valid, /tmp/inputs/input-3/data]
       image: shamiulshifat/titanictrain:v3
+      resources:
+       limits:
+         cpu: "120m"
+         memory: "150Mi"
+       requests:
+         cpu: "60m"
+         memory: "100M"
     inputs:
       parameters:
       - {name: param_url}
