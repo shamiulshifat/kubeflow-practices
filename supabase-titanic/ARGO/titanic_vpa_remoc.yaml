@@ -6,6 +6,6 @@ spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Workflow
-    name:       titanic-pipeline-vpa-get-recom
+    name:       titanic-pipeline-vpa-get-recom8xmpk
   updatePolicy:
     updateMode: "Off"
