@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import recall_score, classification_report, precision_score, f1_score, roc_auc_score, accuracy_score
 from sklearn.feature_selection import SelectFromModel
 #import joblib
-from mega import Mega
+#from mega import Mega
 from urllib.request import urlopen
 import json
 import pickle
@@ -51,12 +51,12 @@ def train(param_data, X_train_data, Y_train_data, X_valid_data, Y_valid_data):
     #save model to cloud
     pickle.dump(RFC, open('model.pkl', 'wb'))
     #send to mega
-    mega = Mega()
-    email='shifat@betterdata.ai'
-    password='shadia1afshan2raisha3'
-    m = mega.login(email, password)
-    file_name='model.pkl'
-    m.upload(file_name)
+    #mega = Mega()
+    #email='shifat@betterdata.ai'
+    #password='shadia1afshan2raisha3'
+    #m = mega.login(email, password)
+    #file_name='model.pkl'
+    #m.upload(file_name)
 
     
 

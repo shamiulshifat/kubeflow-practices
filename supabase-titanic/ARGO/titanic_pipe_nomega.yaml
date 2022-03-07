@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: titanic-survivor-prediction-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-03T16:27:56.535411',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.11, pipelines.kubeflow.org/pipeline_compilation_time: '2022-03-07T11:58:02.152814',
     pipelines.kubeflow.org/pipeline_spec: '{"description": "An example pipeline that
       trains and logs a ML model.", "inputs": [{"name": "traindata_url"}, {"name":
       "testdata_url"}, {"name": "param_url"}], "name": "TITANIC Survivor Prediction
@@ -36,7 +36,7 @@ spec:
   - name: test-model
     container:
       command: [python, deploy.py, --X_test, /tmp/inputs/input-0/data, --model, /tmp/inputs/input-1/data]
-      image: shamiulshifat/titanicdeploy:v3
+      image: shamiulshifat/deploy:nomega
     inputs:
       artifacts:
       - {name: preprocess-data-X_test, path: /tmp/inputs/input-0/data}
@@ -86,7 +86,7 @@ spec:
       command: [python, train.py, --param, '{{inputs.parameters.param_url}}', --X_train,
         /tmp/inputs/input-0/data, --Y_train, /tmp/inputs/input-1/data, --X_valid,
         /tmp/inputs/input-2/data, --Y_valid, /tmp/inputs/input-3/data]
-      image: shamiulshifat/titanictrain:v3
+      image: shamiulshifat/titanictrain:nomega
     inputs:
       parameters:
       - {name: param_url}

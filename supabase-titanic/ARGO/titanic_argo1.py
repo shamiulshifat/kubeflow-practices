@@ -1,5 +1,6 @@
 ## this pipeline works on argo perfectly
 
+from ast import arguments
 import kfp
 from kfp import dsl
 from kfp import compiler
@@ -24,8 +25,8 @@ def train_op(param,X_train, Y_train,X_valid,Y_valid):
 
     return dsl.ContainerOp(
         name='Train Model',
-        image='shamiulshifat/titanictrain:v3',
-        command=[ "python", "train.py", '--param', param, "--X_train", X_train, "--Y_train", Y_train, "--X_valid", X_valid, "--Y_valid", Y_valid],
+        image='shamiulshifat/titanictrain:nomega',
+        command=[ "python", "train.py", "--param", param, "--X_train", X_train, "--Y_train", Y_train, "--X_valid", X_valid, "--Y_valid", Y_valid],
         file_outputs={
             'model': '/app/model.pkl'
         }
@@ -38,7 +39,7 @@ def deploy_op(X_test, model):
 
     return dsl.ContainerOp(
         name='Test Model',
-        image='shamiulshifat/titanicdeploy:v3',
+        image='shamiulshifat/deploy:nomega',
         command=[ "python", "deploy.py", "--X_test", X_test, "--model", model],
         file_outputs={
             'output': '/app/titanic_predictions.csv'
@@ -77,5 +78,5 @@ if __name__ == '__main__':
   workflow_dict = kfp.compiler.Compiler()._create_workflow(titanic_pipeline)
   workflow_dict['metadata']['namespace'] = "argo"
   del workflow_dict['spec']['serviceAccountName']
-  kfp.compiler.Compiler._write_workflow(workflow_dict, "titanic_pipe.yaml")
+  kfp.compiler.Compiler._write_workflow(workflow_dict, "titanic_pipe_nomega.yaml")
  

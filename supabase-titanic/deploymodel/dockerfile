@@ -2,7 +2,7 @@ FROM python:3.7-slim
 
 WORKDIR /app
 
-RUN pip install sklearn numpy mega.py pandas
+RUN pip install numpy mega.py pandas -U scikit-learn
 
 COPY . .
 
