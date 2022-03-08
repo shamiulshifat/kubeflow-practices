@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: webhook
+  name: webhook-titanic
 spec:
   template:
     serviceAccountName: operate-workflow-sa
   dependencies:
-    - name: test-dep
-      eventSourceName: webhook
-      eventName: example
+    - name: test-dep-titanic
+      eventSourceName: webhook-titanic
+      eventName: titanic-param-webhook
   triggers:
     - template:
         name: webhook-workflow-trigger
