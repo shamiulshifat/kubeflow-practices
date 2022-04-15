@@ -1,0 +1,11 @@
+apiVersion: autoscaling.k8s.io/v1beta1
+kind: VerticalPodAutoscaler
+metadata:
+  name: titanic-pipeline-vpa-recom
+spec:
+  targetRef:
+    apiVersion: "argoproj.io/v1alpha1"
+    kind:       Workflow
+    name:       titanic-pipeline-vpa-get-recom8xmpk
+  updatePolicy:
+    updateMode: "Off"

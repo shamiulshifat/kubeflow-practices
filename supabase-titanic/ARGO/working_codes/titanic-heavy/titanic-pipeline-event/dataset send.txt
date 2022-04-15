@@ -1,0 +1,10 @@
+kubectl -n argo port-forward $(kubectl -n argo get pod -l eventsource-name=webhook-titanic -o name) 8080:8080 &
+
+kubectl -n argo apply -f https://raw.githubusercontent.com/shamiulshifat/kubeflow-practices/main/supabase-titanic/ARGO/ebvent-based-workflow/workflowserviceaccount.yaml
+
+
+curl -d '{"traindata_url":"https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/train.csv","testdata_url":"https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/test.csv","param_url":"https://nqdmbmunxbbosfjjvhdj.supabase.co/storage/v1/object/public/demo/params.json"}' -H "Content-Type: application/json" -X POST http://localhost:8080/test
+
+
+
+curl -d '{"message":"Dont call me Shirley"}' -H "Content-Type: application/json" -X POST http://localhost:8080/test

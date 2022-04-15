@@ -1,0 +1,10 @@
+train:
+
+https://nqdmbmunxbbosfjjvhdj.supabase.co/storage/v1/object/public/digit/train.csv
+
+test:
+
+https://nqdmbmunxbbosfjjvhdj.supabase.co/storage/v1/object/public/digit/test.csv
+
+
+python digit_docker.py --traindata_url https://nqdmbmunxbbosfjjvhdj.supabase.co/storage/v1/object/public/digit/train.csv --testdata_url https://nqdmbmunxbbosfjjvhdj.supabase.co/storage/v1/object/public/digit/test.csv --param_data params.json

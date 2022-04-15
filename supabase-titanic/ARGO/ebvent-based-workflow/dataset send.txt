@@ -1,6 +1,0 @@
-kubectl -n argo-events port-forward $(kubectl -n argo-events get pod -l eventsource-name=webhook -o name) 12001:12001 &
-
-kubectl -n argo apply -f https://raw.githubusercontent.com/shamiulshifat/kubeflow-practices/main/supabase-titanic/ARGO/ebvent-based-workflow/workflowserviceaccount.yaml
-
-
-curl -d '{"--traindata_url":"https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/train.csv","--testdata_url":"https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/test.csv","--param_url":"https://nqdmbmunxbbosfjjvhdj.supabase.in/storage/v1/object/public/demo/params.json"}' -H "Content-Type: application/json" -X POST http://localhost:12001/deploy
